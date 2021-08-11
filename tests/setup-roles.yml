@@ -1,0 +1,27 @@
+---
+
+- hosts: all
+  become: true
+  vars:
+    php74_enabled: true
+    vhosts:
+      - domain: default80
+        owner: 'www-data'
+        document_root: /var/www/html/default80
+        ssl: false
+        php_fpm:
+          address: 127.0.0.1:9000
+        headers: []
+        locations: []
+      - domain: default74
+        owner: 'www-data'
+        document_root: /var/www/html/default74
+        ssl: false
+        php_fpm:
+          address: 127.0.0.1:9100
+        headers: []
+        locations: []
+  roles:
+    - ansible-sury-php-fpm
+    - ansible-apache2
+    - ansible-apache2_vhost

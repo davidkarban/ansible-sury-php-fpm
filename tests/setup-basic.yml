@@ -1,0 +1,15 @@
+---
+
+- hosts: all
+  become: True
+  tasks:
+    - name: Install git
+      apt: name=git state=present
+    - name: Clone apache2 role
+      git:
+        repo: https://github.com/davidkarban/ansible-apache2
+        dest: /home/vagrant/.ansible/roles/ansible-apache2
+    - name: Clone apache2_vhost role
+      git:
+        repo: https://github.com/davidkarban/ansible-apache2_vhost/
+        dest: /home/vagrant/.ansible/roles/ansible-apache2_vhost

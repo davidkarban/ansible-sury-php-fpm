@@ -1,0 +1,164 @@
+---
+
+- name: add Ondrej Sury's repo for multiple PHP versions
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items:
+    - "ppa:ondrej/php"
+
+- name: Ensure PHP 8 packages are installed
+  apt: name={{ __php80_fpm_pkgs }} state=present update_cache=yes cache_valid_time=600
+  environment: 
+    # prevent mysql from autostart after installation
+    RUNLEVEL: 1
+  when: php80_enabled
+
+- name: Ensure PHP 7.4 packages are installed
+  apt: name={{ __php74_fpm_pkgs }} state=present update_cache=yes cache_valid_time=600
+  environment: 
+    # prevent mysql from autostart after installation
+    RUNLEVEL: 1
+  when: php74_enabled
+
+- name: Ensure PHP 7.3 packages are installed
+  apt: name={{ __php73_fpm_pkgs }} state=present update_cache=yes cache_valid_time=600
+  environment: 
+    # prevent mysql from autostart after installation
+    RUNLEVEL: 1
+  when: php73_enabled
+
+- name: Ensure PHP 7.2 packages are installed
+  apt: name={{ __php72_fpm_pkgs }} state=present update_cache=yes cache_valid_time=600
+  environment: 
+    # prevent mysql from autostart after installation
+    RUNLEVEL: 1
+  when: php72_enabled
+
+- name: Ensure PHP 7.1 packages are installed
+  apt: name={{ __php71_fpm_pkgs }} state=present update_cache=yes cache_valid_time=600
+  environment: 
+    # prevent mysql from autostart after installation
+    RUNLEVEL: 1
+  when: php71_enabled
+
+- name: Ensure PHP 7.0 packages are installed
+  apt: name={{ __php70_fpm_pkgs }} state=present update_cache=yes cache_valid_time=600
+  environment: 
+    # prevent mysql from autostart after installation
+    RUNLEVEL: 1
+  when: php70_enabled
+
+- name: Ensure PHP 5.6 packages are installed
+  apt: name={{ __php56_fpm_pkgs }} state=present update_cache=yes cache_valid_time=600
+  environment: 
+    # prevent mysql from autostart after installation
+    RUNLEVEL: 1
+  when: php56_enabled
+
+- name: Ensure required packages are installed
+  apt: name={{ item }} state=present update_cache=yes cache_valid_time=600
+  with_items: 
+    - '{{ php_fpm_additional_packages|default([]) }}'
+  environment: 
+    # prevent mysql from autostart after installation
+    RUNLEVEL: 1
+
+- name: Version specific php-fpm configuration
+  include: php-fpm-conf.yml
+  vars:
+    version: "{{ item }}"
+    enabled: "{{ lookup('vars', 'php' + item|replace('.', '') + '_enabled') }}"
+    service: "php{{ item }}-fpm"
+  with_items: "{{ php_versions }}"
+
+- name: Ensure fpm users are available
+  user: name={{ item.owner }} shell=/bin/bash createhome=yes state=present generate_ssh_key=true home={{ item.home|default("/home/" + item.owner) }}
+  with_items: '{{ vhosts|default("[]") }}'
+  when: 
+    - item.php_fpm is defined
+    - item.owner != default_owner
+
+- name: Ensure home directories have sufficient privileges for apache
+  file: path={{ item.home|default("/home/" + item.owner) + '/' }} owner={{ item.owner }} group={{ default_owner }} mode=0710
+  with_items: '{{ vhosts|default("[]") }}'
+  when:
+    - item.php_fpm is defined
+    - item.owner != default_owner
+
+- name: Ensure default php-fpm log and session dirs are prepared
+  file: path={{ item.path }} state=directory owner={{ default_owner }} group={{ default_owner }} mode=0755 
+  with_items:
+    - { name: 'log', path: "{{ php_fpm_log_dir }}" }
+    - { name: "session", path: "{{ php_fpm_session_dir }}" }
+
+- name: Ensure php-fpm log and session dirs are prepared
+  file: path={{ item[0].home|default("/home/" + item[0].owner) + '/' + item[1] }} state=directory owner={{ item[0].owner }} group={{ item[0].owner | default(default_owner) }} mode=0755 
+  with_nested:
+    - '{{ vhosts|default("[]") }}'
+    - ['log', 'session']
+  when: 
+    - item[0].php_fpm is defined
+    - item[0].owner != default_owner
+
+- name: Ensure all pools are available
+  template: src=pool.conf.j2 dest={{ php_fpm_pool_directory + '/' + item.owner|default(default_owner) + '.conf' }} owner={{ item.owner|default(default_owner) }} group={{ item.owner|default(default_owner) }} mode=0600 backup=yes
+  with_items: '{{ vhosts|default("[]") }}'
+  notify: "reload php{{ item.php_fpm.version }}-fpm"
+  when: 
+    - item.php_fpm is defined
+    - item.owner != default_owner
+
+- name: Ensure php{{ version }}-fpm is running
+  service: name="php{{ item }}-fpm" state=started enabled=yes
+  vars:
+    enabled: "{{ lookup('vars', 'php' + item|replace('.', '') + '_enabled') }}"
+  when: "enabled|bool"
+  with_items: "{{ php_versions }}"
+
+# [WARNING]: "register" is not templatable
+- name: Check php8.0 binary
+  register: "php80_binary_exists"
+  command: "which php8.0"
+  ignore_errors: yes
+
+- name: Check php7.4 binary
+  register: "php74_binary_exists"
+  command: "which php7.4"
+  ignore_errors: yes
+
+- name: Check php7.3 binary
+  register: "php73_binary_exists"
+  command: "which php7.3"
+  ignore_errors: yes
+
+- name: Check php7.2 binary
+  register: "php72_binary_exists"
+  command: "which php7.2"
+  ignore_errors: yes
+
+- name: Check php7.1 binary
+  register: "php71_binary_exists"
+  command: "which php7.1"
+  ignore_errors: yes
+
+- name: Check php7.0 binary
+  register: "php70_binary_exists"
+  command: "which php7.0"
+  ignore_errors: yes
+
+- name: Check php5.6 binary
+  register: "php56_binary_exists"
+  command: "which php5.6"
+  ignore_errors: yes
+
+- name: Ensure php{{ item }}-fpm is disabled
+  service: name="php{{ item }}-fpm" state=stopped enabled=no
+  vars:
+    enabled: "{{ lookup('vars', 'php' + item|replace('.', '') + '_enabled') }}"
+    binary_exists: "{{ lookup('vars', 'php' + item|replace('.', '') + '_binary_exists') }}"
+  when:
+    - "not enabled|bool"
+    - "binary_exists.rc == 0"
+  with_items: "{{ php_versions }}"
+  ignore_errors: yes

@@ -1,0 +1,27 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Ensure test directories are present
+      file:
+        path: "/var/www/html/{{ item }}"
+        state: directory
+        owner: "www-data"
+      with_items:
+        - default80
+        - default74
+    - name: Create index.php files in test directories
+      copy:
+        dest: "/var/www/html/{{ item }}/index.php"
+        owner: "www-data"
+        content: |
+          <?php
+          echo PHP_VERSION;
+      with_items:
+        - default80
+        - default74
+    - name: Check php80-fpm
+      uri:
+        url: "http://{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+        method: GET

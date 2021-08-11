@@ -1,0 +1,20 @@
+---
+- name: Ensure default pool for php{{ version }}-fpm isn't present
+  file: path="/etc/php/{{ version }}/fpm/pool.d/www.conf" state=absent
+  when: "enabled|bool"
+
+- name: Ensure master configuration for php{{ version }}-fpm is in place
+  template: src={{ version + '/' + local_item.name + '.j2' }} dest={{ local_item.path + '/' + local_item.name }} owner=root group=root mode=0640 backup=yes
+  loop_control:
+    loop_var: local_item
+  vars:
+    __php_fpm_pool_directory: "/etc/php/{{ version }}/fpm/pool.d"
+    pidfile: "/run/php/php{{ version }}-fpm.pid"
+    error_log: "/var/log/php{{ version }}-fpm.log"
+    daemonize: "{% if ansible_distribution == 'Debian' and ansible_distribution_major_version|int <= 7 %}yes{% else %}no{% endif %}"
+  with_items:
+    - { name: "php-fpm.conf", path: "/etc/php/{{ version }}/fpm" }
+    - { name: "php.ini", path: "/etc/php/{{ version }}/fpm" }
+    - { name: "www.conf", path: "/etc/php/{{ version }}/fpm/pool.d" }
+  notify: "reload {{ service }}"
+  when: "enabled|bool"
