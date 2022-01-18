@@ -8,7 +8,9 @@ php_versions:
   - '7.3'
   - '7.4'
   - '8.0'
+  - '8.1'
 
+php81_enabled: no
 php80_enabled: yes
 php74_enabled: no
 php73_enabled: no
@@ -44,3 +46,4 @@ php_fpm_pool_directory: '{{ __php_fpm_pool_directory }}'
 php_fpm_modules_dir: '{{ __php_fpm_modules_dir }}'
 
 default_owner: "www-data"
+
