@@ -7,6 +7,13 @@
   with_items:
     - "ppa:ondrej/php"
 
+- name: Ensure PHP 8.2 packages are installed
+  apt: name={{ __php82_fpm_pkgs }} state=present update_cache=yes cache_valid_time=600
+  environment:
+    # prevent mysql from autostart after installation
+    RUNLEVEL: 1
+  when: php82_enabled
+
 - name: Ensure PHP 8.1 packages are installed
   apt: name={{ __php81_fpm_pkgs }} state=present update_cache=yes cache_valid_time=600
   environment: 
@@ -122,6 +129,11 @@
     enabled: "{{ lookup('vars', 'php' + item|replace('.', '') + '_enabled') }}"
   when: "enabled|bool"
   with_items: "{{ php_versions }}"
+
+- name: Check php8.2 binary
+  register: "php82_binary_exists"
+  command: "which php8.2"
+  ignore_errors: yes
 
 # [WARNING]: "register" is not templatable
 - name: Check php8.1 binary
