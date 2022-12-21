@@ -4,18 +4,20 @@
   become: true
   vars:
     php74_enabled: true
+    apache_default_vhost_enabled: false
+    apache_default_ssl_vhost_enabled: false
     vhosts:
-      - domain: default80
+      - domain: php80.local
         owner: 'www-data'
-        document_root: /var/www/html/default80
+        document_root: /var/www/html/php80
         ssl: false
         php_fpm:
           address: 127.0.0.1:9000
         headers: []
         locations: []
-      - domain: default74
+      - domain: php74.local
         owner: 'www-data'
-        document_root: /var/www/html/default74
+        document_root: /var/www/html/php74
         ssl: false
         php_fpm:
           address: 127.0.0.1:9100
