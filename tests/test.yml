@@ -9,6 +9,7 @@
         state: directory
         owner: "www-data"
       with_items:
+        - php82
         - php81
         - php80
         - php74
@@ -20,7 +21,8 @@
           <?php
           echo PHP_VERSION;
       with_items:
-        - php80
+        - php82
+        - php81
         - php80
         - php74
     - name: Check php74-fpm
@@ -44,12 +46,22 @@
       register: php80_body
       failed_when: "'8.0.' not in php80_body.content"
     - name: Check php81-fpm
-        uri:
-          url: "http://{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
-          method: GET
-          headers:
-            Host: php81.local
-          return_content: true
-          status_code: 200
-        register: php81_body
-        failed_when: "'8.1.' not in php80_body.content"
+      uri:
+        url: "http://{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+        method: GET
+        headers:
+          Host: php81.local
+        return_content: true
+        status_code: 200
+      register: php81_body
+      failed_when: "'8.1.' not in php81_body.content"
+    - name: Check php82-fpm
+      uri:
+        url: "http://{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
+        method: GET
+        headers:
+          Host: php82.local
+        return_content: true
+        status_code: 200
+      register: php82_body
+      failed_when: "'8.2.' not in php82_body.content"

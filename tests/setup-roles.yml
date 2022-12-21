@@ -5,9 +5,18 @@
   vars:
     php74_enabled: true
     php81_enabled: true
+    php82_enabled: true
     apache_default_vhost_enabled: false
     apache_default_ssl_vhost_enabled: false
     vhosts:
+      - domain: php82.local
+        owner: 'www-data'
+        document_root: /var/www/html/php82
+        ssl: false
+        php_fpm:
+          address: 127.0.0.1:9820
+        headers: []
+        locations: []
       - domain: php81.local
         owner: 'www-data'
         document_root: /var/www/html/php81
