@@ -12,7 +12,7 @@
         document_root: /var/www/html/php80
         ssl: false
         php_fpm:
-          address: 127.0.0.1:9000
+          address: 127.0.0.1:9800
         headers: []
         locations: []
       - domain: php74.local
@@ -20,7 +20,7 @@
         document_root: /var/www/html/php74
         ssl: false
         php_fpm:
-          address: 127.0.0.1:9100
+          address: 127.0.0.1:9740
         headers: []
         locations: []
   roles:
