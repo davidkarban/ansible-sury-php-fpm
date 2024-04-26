@@ -10,10 +10,12 @@ php_versions:
   - '8.0'
   - '8.1'
   - '8.2'
+  - '8.3'
 
+php83_enabled: yes
 php82_enabled: no
 php81_enabled: no
-php80_enabled: yes
+php80_enabled: no
 php74_enabled: no
 php73_enabled: no
 php72_enabled: no

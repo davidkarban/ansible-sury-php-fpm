@@ -3,12 +3,20 @@
 - hosts: all
   become: true
   vars:
-    php74_enabled: true
     php81_enabled: true
     php82_enabled: true
+    php83_enabled: true
     apache_default_vhost_enabled: false
     apache_default_ssl_vhost_enabled: false
     vhosts:
+      - domain: php83.local
+        owner: 'www-data'
+        document_root: /var/www/html/php83
+        ssl: false
+        php_fpm:
+          address: 127.0.0.1:9830
+        headers: []
+        locations: []
       - domain: php82.local
         owner: 'www-data'
         document_root: /var/www/html/php82
@@ -23,22 +31,6 @@
         ssl: false
         php_fpm:
           address: 127.0.0.1:9810
-        headers: []
-        locations: []
-      - domain: php80.local
-        owner: 'www-data'
-        document_root: /var/www/html/php80
-        ssl: false
-        php_fpm:
-          address: 127.0.0.1:9800
-        headers: []
-        locations: []
-      - domain: php74.local
-        owner: 'www-data'
-        document_root: /var/www/html/php74
-        ssl: false
-        php_fpm:
-          address: 127.0.0.1:9740
         headers: []
         locations: []
   roles:

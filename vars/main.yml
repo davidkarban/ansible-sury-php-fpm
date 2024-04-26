@@ -1,5 +1,5 @@
 ---
-__php70_fpm_pkgs: 
+__php70_fpm_pkgs:
   - php7.0
   - php7.0-fpm
   - php7.0-cgi
@@ -22,7 +22,7 @@ __php70_fpm_pkgs:
   - php7.0-mbstring
   - php7.0-soap
 
-__php71_fpm_pkgs: 
+__php71_fpm_pkgs:
   - php7.1
   - php7.1-fpm
   - php7.1-cgi
@@ -45,7 +45,7 @@ __php71_fpm_pkgs:
   - php7.1-mbstring
   - php7.1-soap
 
-__php72_fpm_pkgs: 
+__php72_fpm_pkgs:
   - php7.2
   - php7.2-fpm
   - php7.2-cgi
@@ -68,7 +68,7 @@ __php72_fpm_pkgs:
   - php7.2-mbstring
   - php7.2-soap
 
-__php73_fpm_pkgs: 
+__php73_fpm_pkgs:
   - php7.3
   - php7.3-fpm
   - php7.3-cgi
@@ -91,7 +91,7 @@ __php73_fpm_pkgs:
   - php7.3-mbstring
   - php7.3-soap
 
-__php74_fpm_pkgs: 
+__php74_fpm_pkgs:
   - php7.4
   - php7.4-fpm
   - php7.4-cgi
@@ -114,7 +114,7 @@ __php74_fpm_pkgs:
   - php7.4-mbstring
   - php7.4-soap
 
-__php80_fpm_pkgs: 
+__php80_fpm_pkgs:
   - php8.0
   - php8.0-fpm
   - php8.0-cgi
@@ -137,7 +137,7 @@ __php80_fpm_pkgs:
   - php8.0-mbstring
   - php8.0-soap
 
-__php81_fpm_pkgs: 
+__php81_fpm_pkgs:
   - php8.1
   - php8.1-fpm
   - php8.1-cgi
@@ -160,7 +160,7 @@ __php81_fpm_pkgs:
   - php8.1-mbstring
   - php8.1-soap
 
-__php82_fpm_pkgs: 
+__php82_fpm_pkgs:
   - php8.2
   - php8.2-fpm
   - php8.2-cgi
@@ -182,6 +182,29 @@ __php82_fpm_pkgs:
   - php8.2-opcache
   - php8.2-mbstring
   - php8.2-soap
+
+__php83_fpm_pkgs:
+  - php8.3
+  - php8.3-fpm
+  - php8.3-cgi
+  - php8.3-cli
+  - php8.3-common
+  - php8.3-curl
+  - php8.3-gd
+  - php8.3-imap
+  - php8.3-sqlite3
+  - php8.3-mysqlnd
+  - php8.3-dev
+  - php8.3-imagick
+  - php8.3-intl
+  - php8.3-memcache
+  - php8.3-pspell
+  - php8.3-tidy
+  - php8.3-xmlrpc
+  - php8.3-xsl
+  - php8.3-opcache
+  - php8.3-mbstring
+  - php8.3-soap
 
 php_fpm_default_session_dir: "/var/lib/php/sessions"
 php_fpm_default_log_dir: "/var/log/"

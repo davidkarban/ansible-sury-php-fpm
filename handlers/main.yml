@@ -1,4 +1,7 @@
 ---
+- name: reload php8.3-fpm
+  service: name=php8.3-fpm state=reloaded
+
 - name: reload php8.2-fpm
   service: name=php8.2-fpm state=reloaded
 
