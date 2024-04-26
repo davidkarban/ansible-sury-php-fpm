@@ -86,7 +86,7 @@
     RUNLEVEL: 1
 
 - name: Version specific php-fpm configuration
-  include: php-fpm-conf.yml
+  include_tasks: php-fpm-conf.yml
   vars:
     version: "{{ item }}"
     enabled: "{{ lookup('vars', 'php' + item|replace('.', '') + '_enabled') }}"
