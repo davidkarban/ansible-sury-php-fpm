@@ -1,5 +1,11 @@
 ---
 
+- name: load Ubuntu 24 variables
+  include_vars: "Ubuntu-24.yml"
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+    - ansible_facts['distribution_major_version'] == "24"
+
 - name: add Ondrej Sury's repo for multiple PHP versions
   apt_repository:
     repo: "{{ item }}"
