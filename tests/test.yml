@@ -4,7 +4,7 @@
   become: true
   tasks:
     - name: Ensure test directories are present
-      file:
+      ansible.builtin.file:
         path: "/var/www/html/{{ item }}"
         state: directory
         owner: "www-data"
@@ -13,7 +13,7 @@
         - php82
         - php81
     - name: Create index.php files in test directories
-      copy:
+      ansible.builtin.copy:
         dest: "/var/www/html/{{ item }}/index.php"
         owner: "www-data"
         content: |
@@ -24,7 +24,7 @@
         - php82
         - php81
     - name: Check php81-fpm
-      uri:
+      ansible.builtin.uri:
         url: "http://{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
         method: GET
         headers:
@@ -34,7 +34,7 @@
       register: php81_body
       failed_when: "'8.1.' not in php81_body.content"
     - name: Check php82-fpm
-      uri:
+      ansible.builtin.uri:
         url: "http://{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
         method: GET
         headers:
@@ -44,7 +44,7 @@
       register: php82_body
       failed_when: "'8.2.' not in php82_body.content"
     - name: Check php83-fpm
-      uri:
+      ansible.builtin.uri:
         url: "http://{{ ansible_default_ipv4.address|default(ansible_all_ipv4_addresses[0]) }}"
         method: GET
         headers:
