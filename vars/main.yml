@@ -1,6 +1,5 @@
 ---
 __php70_fpm_pkgs:
-  - php7.0
   - php7.0-fpm
   - php7.0-cgi
   - php7.0-cli
@@ -23,7 +22,6 @@ __php70_fpm_pkgs:
   - php7.0-soap
 
 __php71_fpm_pkgs:
-  - php7.1
   - php7.1-fpm
   - php7.1-cgi
   - php7.1-cli
@@ -46,7 +44,6 @@ __php71_fpm_pkgs:
   - php7.1-soap
 
 __php72_fpm_pkgs:
-  - php7.2
   - php7.2-fpm
   - php7.2-cgi
   - php7.2-cli
@@ -69,7 +66,6 @@ __php72_fpm_pkgs:
   - php7.2-soap
 
 __php73_fpm_pkgs:
-  - php7.3
   - php7.3-fpm
   - php7.3-cgi
   - php7.3-cli
@@ -92,7 +88,6 @@ __php73_fpm_pkgs:
   - php7.3-soap
 
 __php74_fpm_pkgs:
-  - php7.4
   - php7.4-fpm
   - php7.4-cgi
   - php7.4-cli
@@ -115,7 +110,6 @@ __php74_fpm_pkgs:
   - php7.4-soap
 
 __php80_fpm_pkgs:
-  - php8.0
   - php8.0-fpm
   - php8.0-cgi
   - php8.0-cli
@@ -138,7 +132,6 @@ __php80_fpm_pkgs:
   - php8.0-soap
 
 __php81_fpm_pkgs:
-  - php8.1
   - php8.1-fpm
   - php8.1-cgi
   - php8.1-cli
@@ -161,7 +154,6 @@ __php81_fpm_pkgs:
   - php8.1-soap
 
 __php82_fpm_pkgs:
-  - php8.2
   - php8.2-fpm
   - php8.2-cgi
   - php8.2-cli
@@ -184,7 +176,6 @@ __php82_fpm_pkgs:
   - php8.2-soap
 
 __php83_fpm_pkgs:
-  - php8.3
   - php8.3-fpm
   - php8.3-cgi
   - php8.3-cli
@@ -208,4 +199,3 @@ __php83_fpm_pkgs:
 
 php_fpm_default_session_dir: "/var/lib/php/sessions"
 php_fpm_default_log_dir: "/var/log/"
-
